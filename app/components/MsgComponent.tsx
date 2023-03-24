@@ -7,10 +7,18 @@ import { useCtx } from "../context/ChatContext";
 
 const MsgComponent = ({ el, index }: { el: any; index: number }) => {
   const [menu, setMenu] = useState(false);
-  const { ShowReply, myMsg, deleteMsg, formatTime,saveId,setSaveId, replyData } = useCtx();
+  const {
+    ShowReply,
+    myMsg,
+    deleteMsg,
+    formatTime,
+    saveId,
+    setSaveId,
+    replyData,
+  } = useCtx();
 
   const diffFNC = (index: number) => {
-    if (myMsg.length >= 2 ) {
+    if (myMsg.length >= 2) {
       let msgA = myMsg[index]?.id;
       let msgB = myMsg[index + 1]?.id;
       let diff = (msgB - msgA) / (60 * 1000);
@@ -18,16 +26,31 @@ const MsgComponent = ({ el, index }: { el: any; index: number }) => {
       return diff;
     }
   };
-  
 
-    const showMenu = () => {
-      if (el.id === saveId) {
-        setMenu(!menu);
-      }
-    };
-    
+  // const DayDiff = (index: number)=>{
+  //   if(myMsg.length >= 2){
+  //     let msgA = myMsg[index]?.id;
+  //     let msgB = myMsg[index + 1]?.id;
+  //     let diff = (msgB - msgA) / (60 * 1000);
+  //     diff = Number(diff.toFixed(0));
+  //     return diff;
+  //   }
+  // }
+
+  const showMenu = () => {
+    if (el.id === saveId) {
+      setMenu(!menu);
+    }
+  };
+
   return (
     <MsgComponentDiv>
+        {/* {
+          DayDiff(index) == 0 ? <p>New - Today</p> : DayDiff(index) == 1 ? <p> Yesterday </p> : DayDiff(index)! > 1 ? <p>Long Time Ago</p>: <p>{`New - ${formatTime(el.id)}`}</p>
+        } */}
+
+        {/* <p> New - { DayDiff(index) = 0 ? "Today" : DayDiff(index) = 1 ? "Yesterday" :  DayDiff(index) > 1 ? "Long Time Ago" } </p> */}
+      
       <div
         className={`sender_chat_card group/item flex flex-col p-[2px] justify-end `}
       >
@@ -62,13 +85,17 @@ const MsgComponent = ({ el, index }: { el: any; index: number }) => {
             <button>
               <VscSmiley />
             </button>
-            <button onClick={()=>{ShowReply(), replyData(el.id)}}>
+            <button
+              onClick={() => {
+                ShowReply(), replyData(el.id,index);
+              }}
+            >
               <BsReplyAllFill />
             </button>
             <button
               onClick={() => {
-                  setSaveId(()=> el.id === saveId ? 0 : el.id);
-                  showMenu();
+                setSaveId(() => (el.id === saveId ? 0 : el.id));
+                showMenu();
               }}
             >
               <BsThreeDots />
@@ -103,10 +130,29 @@ const MsgComponent = ({ el, index }: { el: any; index: number }) => {
 export default MsgComponent;
 
 const MsgComponentDiv = styled.div`
+ .hr {
+    padding: 40px;
+  }
+
+  .hr hr {
+    color: none;
+    border-top: 1px solid #72767e;
+    flex: 1;
+    margin-inline: 20px;
+  }
+
+  .hr p {
+    font-size: 14px;
+    color: #72767e;
+  }
+
   .sender_chat_card {
     margin-inline: 40px;
+      
 
     .message p {
+      max-width: 322px;
+      word-break: break-all;
       color: whitesmoke;
       border-radius: 15px;
       background-color: #343434;

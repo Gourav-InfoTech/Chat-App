@@ -11,8 +11,13 @@ const Ctx = createContext<{
   formatTime: (s: number) => string;
   saveId: number;
   setSaveId: React.Dispatch<React.SetStateAction<number>>;
-  replyData: (s: number) => void;
-  trial: any;
+  replyData: (s: number, i: number) => void;
+  toReply: {
+    text: string;
+    file: any;
+    id: number;
+    index: number
+  };
 }>({
   show: false,
   showIt: "",
@@ -24,24 +29,41 @@ const Ctx = createContext<{
   saveId: 0,
   setSaveId: () => {},
   replyData: () => {},
-  trial: "",
+  toReply: {
+    text: "",
+    file: "",
+    id: 0,
+    index: 0
+  },
 });
 
 const ChatContext = ({ children }: any) => {
   const [show, setShow] = useState(false);
   const [myMsg, setMyMsg] = useState<any[]>([]);
   const [saveId, setSaveId] = useState<number>(0);
-  const [trial, setTrial] = useState("");
+  const [toReply, setToReply] = useState({
+    text: "",
+    file: "",
+    id: 0,
+    index: -1
+  });
 
   const ShowReply = () => {
     setShow(!show);
-    // myMsg.map((el) => { return { ...el, replies : [...el.replies, {reply : "hi"}]} })
   };
 
-  const replyData = (id: number) => {
+  // console.log(myMsg[myMsg.length - 1], " length - 1");
+  // console.log(myMsg[myMsg.length - 2], " length - 2 ");
+  
+
+  const replyData = (id: number, index: number) => {
     myMsg.filter((el: any) => {
       if (el.id === id) {
-        setTrial(el.text);
+        if (el.text) {
+          setToReply({ text: el.text, file: "",id: el.id, index: index });
+        } else if (el.file) {
+          setToReply({ file: el.file, text: "", id: el.id, index: index });
+        }
       }
     });
   };
@@ -66,6 +88,7 @@ const ChatContext = ({ children }: any) => {
   const showIt = show ? "block" : "hidden";
   console.log(myMsg);
 
+
   return (
     <Ctx.Provider
       value={{
@@ -79,7 +102,7 @@ const ChatContext = ({ children }: any) => {
         saveId,
         setSaveId,
         replyData,
-        trial,
+        toReply,
       }}
     >
       {children}

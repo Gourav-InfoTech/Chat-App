@@ -7,15 +7,16 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import { useCtx } from "../context/ChatContext";
 
 interface props {
-  onsend: ()=> void,
+  onsend: ()=> void,  
   onimage: (s: any)=> void,
   keypresshandler : (e: any)=> void,
   text: string,
-  settext: React.Dispatch<React.SetStateAction<string>>;
+  // settext: React.Dispatch<React.SetStateAction<string>>;
+  inputChange: (e:any)=> void
 }
 
-const InputBar = ({onsend, onimage, keypresshandler,text,settext}: props) => {
-  const { myMsg, setMyMsg } = useCtx();
+const InputBar = ({onsend, onimage, keypresshandler, text, inputChange}: props) => {
+  // const { myMsg, setMyMsg } = useCtx();
 
   const hiddenFileInput = React.useRef<any>(null);
   const handleClick = () => {
@@ -45,7 +46,7 @@ const InputBar = ({onsend, onimage, keypresshandler,text,settext}: props) => {
           type="text"
           placeholder="Type your message"
           value={text}
-          onChange={(e) => settext(e.target.value)}
+          onChange={inputChange}
           onKeyDown ={keypresshandler}
         />
         <button>

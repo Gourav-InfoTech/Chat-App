@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useId, useEffect } from "react";
+import React, { useState} from "react";
 import styled from "styled-components";
 import { BsThreeDots, BsReplyAllFill } from "react-icons/bs";
 import { VscSmiley } from "react-icons/Vsc";
@@ -8,13 +8,17 @@ import MsgComponent from "./MsgComponent";
 import InputBar from "./InputBar";
 
 const Chat = () => {
-  const { ShowReply, myMsg,setMyMsg } = useCtx();
+  const { ShowReply, myMsg, setMyMsg } = useCtx();
   const [text, setText] = useState<any>("");
 
   const keypressHandler = (e: any)=>{
     if(e.keyCode === 13){
       onSend();
     }
+  }
+
+  const InputChange = (e: any)=>{
+  setText(e.target.value)
   }
 
 function onSend() {
@@ -29,16 +33,30 @@ const onImage = (f: any) => {
   setMyMsg((prev) => [...prev, { file: f, id: Date.now() }]);
 };
 
+const dayDiff = ()=>{
+  if(myMsg.length>=2){
+    let msgA = myMsg[myMsg.length - 2]?.id;
+    let msgB = myMsg[myMsg.length - 1]?.id;
+    let diff = ( msgB - msgA )/(60*1000);
+    
+    let diffnum = Number(diff.toFixed(0)) ;
+
+    return diffnum == 0 ? "Today" : diffnum == 1 ? "Yesterday" : diffnum > 1 ? "Long Time Ago" : "Today"
+  }
+}
+
 
   return (
     <ChatDiv>
+
+      { 
+
+      }
+
       <div className="hr flex items-center">
         <hr />
-        <p> New - Today </p>
-      </div>
-
-      {/* receiving card*/}
-
+        <p> {`${dayDiff()}`} </p>
+        </div>
       <div className="receiving_chat_card group/item flex gap-3">
         <div className="imgSec">
           <img src="/assets/person.jpeg" alt="" />
@@ -76,8 +94,8 @@ const onImage = (f: any) => {
           })}
       </div>
 
-      <div className="input_bar absolute bottom-0 w-full">
-        <InputBar onsend={onSend} onimage={onImage} text={text} settext={setText} keypresshandler={keypressHandler}/>
+      <div className="input_bar fixed bottom-0">
+        <InputBar onsend={onSend} onimage={onImage} text={text} keypresshandler={keypressHandler} inputChange={InputChange}/>
       </div>
     </ChatDiv>
   );
@@ -133,6 +151,11 @@ const ChatDiv = styled.div`
         background-color: #212326;
       }
     }
+  }
+
+  .input_bar{
+    width: -moz-available;
+    width: -webkit-fill-available
   }
 `;
 

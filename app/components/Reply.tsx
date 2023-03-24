@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { IoMdClose } from "react-icons/io";
@@ -7,14 +7,55 @@ import InputBar from "./InputBar";
 import { useCtx } from "../context/ChatContext";
 
 const Reply = () => {
-  const { showIt, ShowReply, myMsg, trial } = useCtx();
+  const { showIt, ShowReply, myMsg, setMyMsg, toReply } = useCtx();
+  const [text, setText] = useState("");
+  const [replies, setReplies] = useState<any[]>([]);
+  console.log(myMsg[toReply.index], "index");
+
+  const InputChange = (e: any) => {
+    setText(e.target.value);
+  };
+
+  const onSend = () => {
+    let newReplies = [...replies, { text: text }];
+    setReplies(newReplies);
+
+    const updatedMyMsg = myMsg.map((el) => {
+      if (el.id === toReply?.id) {
+        return { ...el, reply: newReplies };
+      } else {
+        return el;
+      }
+    });
+    setMyMsg(updatedMyMsg);
+    setText("");
+  };
+
+  // function onSend() {
+  //   // myMsg.map((el) => { return { ...el, replies : [...el.replies, {reply : "hi"}]} })
+  //     setReplies((reply: any) => [...reply, { text: text }]);
+
+  //     myMsg.map((el) => {
+  //       if (el.id === toReply.id) {
+  //         // el.reply = [ ...el.reply, {text: text}]
+  //         el.reply = replies;
+  //       }
+  //     });
+  //     setText("")
+  // }
+
+  function onImage(f: any) {
+    setReplies((reply: any) => [...reply, { file: f }]);
+  }
+
+  function keypressHandler() {}
 
   return (
     <div className={`${showIt} h-[100vh] bg-[#282a2d]`}>
       <ReplyDiv>
         <ThreadHeader>
           <div className="info">
-            <h2 className="font-bold"> Reply</h2>
+            <h2 className="font-bold">Reply</h2>
           </div>
           <button onClick={() => ShowReply()}>
             <IoMdClose />
@@ -26,15 +67,36 @@ const Reply = () => {
           </div>
           <div>
             <div className="message inline-block">
-              <p>{trial}</p>
+              {toReply?.text && <p>{toReply?.text}</p>}
+              {toReply?.file && (
+                <img
+                  src={URL.createObjectURL(toReply?.file)}
+                  alt=""
+                  height={100}
+                  width={100}
+                />
+              )}
             </div>
+            {myMsg[toReply.index]?.reply?.map((el: any, indx: any) => {
+              return (
+                <div key={indx}>
+                  <h1>{el.text}</h1>
+                </div>
+              );
+            })}
             <div className="msg_info flex text-[#72767E] text-[12px]">
               <p>frosty-scene-9 </p>
               <p> Today at 12:02 AM</p>
             </div>
           </div>
         </div>
-        {/* <InputBar /> */}
+        <InputBar
+          onsend={onSend}
+          onimage={onImage}
+          text={text}
+          inputChange={InputChange}
+          keypresshandler={keypressHandler}
+        />
       </ReplyDiv>
     </div>
   );
@@ -53,6 +115,8 @@ const ReplyDiv = styled.div`
     }
 
     .message p {
+      max-width: 322px;
+      word-break: break-all;
       color: whitesmoke;
       border-radius: 15px;
       background-color: #343434;
@@ -101,3 +165,12 @@ const ThreadHeader = styled.div`
     gap: 10px;
   }
 `;
+
+// setMyMsg((el: any) => [...el, (el[0].text2 = "hello2")]);
+
+// setMyMsg((el: any)=> [...el, {}])
+
+//       setMyMsg((prev)=> [ ...prev , { ...el, replies : [...el.replies, {
+//         text: Text
+//   }]
+// }])
