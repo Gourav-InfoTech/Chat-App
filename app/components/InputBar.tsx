@@ -7,15 +7,21 @@ import { MdOutlineAddCircle } from "react-icons/md";
 import { useCtx } from "../context/ChatContext";
 
 interface props {
-  onsend: ()=> void,  
-  onimage: (s: any)=> void,
-  keypresshandler : (e: any)=> void,
-  text: string,
+  onsend: () => void;
+  onimage: (s: any) => void;
+  keypresshandler: (e: any) => void;
+  text: string;
   // settext: React.Dispatch<React.SetStateAction<string>>;
-  inputChange: (e:any)=> void
+  inputChange: (e: any) => void;
 }
 
-const InputBar = ({onsend, onimage, keypresshandler, text, inputChange}: props) => {
+const InputBar = ({
+  onsend,
+  onimage,
+  keypresshandler,
+  text,
+  inputChange,
+}: props) => {
   // const { myMsg, setMyMsg } = useCtx();
 
   const hiddenFileInput = React.useRef<any>(null);
@@ -37,7 +43,7 @@ const InputBar = ({onsend, onimage, keypresshandler, text, inputChange}: props) 
           multiple
           type="file"
           ref={hiddenFileInput}
-          onChange={(e: any)=>onimage(e.target.files[0])}
+          onChange={(e: any) => onimage(e.target.files[0])}
           style={{ display: "none" }}
         />
       </div>
@@ -47,7 +53,7 @@ const InputBar = ({onsend, onimage, keypresshandler, text, inputChange}: props) 
           placeholder="Type your message"
           value={text}
           onChange={inputChange}
-          onKeyDown ={keypresshandler}
+          onKeyDown={keypresshandler}
         />
         <button>
           <VscSmiley />
@@ -98,21 +104,19 @@ const InputBarDiv = styled.div`
   }
 `;
 
+// function onSend() {
+//   if (text) {
+//     setMyMsg((prev) => [...prev, { text, id: Date.now() }]);
+//   }
+//   setText("");
+// }
 
+// const onImage = (f: any) => {
+//     setMyMsg((prev) => [...prev, { file: f, id: Date.now() }]);
+// };
 
-  // function onSend() {
-  //   if (text) {
-  //     setMyMsg((prev) => [...prev, { text, id: Date.now() }]);
-  //   }
-  //   setText("");
-  // }
-
-  // const onImage = (f: any) => {
-  //     setMyMsg((prev) => [...prev, { file: f, id: Date.now() }]);
-  // };
-
-  // const keypressHandler = (e: any)=>{
-  //   if(e.keyCode === 13){
-  //     onSend();
-  //   }
-  // }
+// const keypressHandler = (e: any)=>{
+//   if(e.keyCode === 13){
+//     onSend();
+//   }
+// }

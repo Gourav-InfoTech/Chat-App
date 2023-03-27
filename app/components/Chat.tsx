@@ -70,9 +70,9 @@ const dayDiff = ()=>{
               <button>
                 <VscSmiley />
               </button>
-              {/* <button onClick={()=>ShowReply()}>
+              <button onClick={()=>ShowReply()}>
                 <BsReplyAllFill />
-              </button> */}
+              </button>
               <button>
                 <BsThreeDots />
               </button>

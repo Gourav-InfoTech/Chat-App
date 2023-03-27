@@ -17,12 +17,12 @@ const Reply = () => {
   };
 
   const onSend = () => {
-    let newReplies = [...replies, { text: text }];
-    setReplies(newReplies);
-
     const updatedMyMsg = myMsg.map((el) => {
       if (el.id === toReply?.id) {
-        return { ...el, reply: newReplies };
+        return {
+          ...el,
+          reply: el?.reply ? [...el?.reply, { text: text }] : [{ text: text }],
+        };
       } else {
         return el;
       }
@@ -31,21 +31,19 @@ const Reply = () => {
     setText("");
   };
 
-  // function onSend() {
-  //   // myMsg.map((el) => { return { ...el, replies : [...el.replies, {reply : "hi"}]} })
-  //     setReplies((reply: any) => [...reply, { text: text }]);
-
-  //     myMsg.map((el) => {
-  //       if (el.id === toReply.id) {
-  //         // el.reply = [ ...el.reply, {text: text}]
-  //         el.reply = replies;
-  //       }
-  //     });
-  //     setText("")
-  // }
-
   function onImage(f: any) {
-    setReplies((reply: any) => [...reply, { file: f }]);
+    const updatedMyMsg = myMsg.map((el) => {
+      if (el.id === toReply?.id) {
+        return {
+          ...el,
+          reply: el?.reply ? [...el?.reply, { file: f }] : [{ file: f }],
+        };
+      } else {
+        return el;
+      }
+    });
+    setMyMsg(updatedMyMsg);
+    setText("");
   }
 
   function keypressHandler() {}
@@ -80,7 +78,10 @@ const Reply = () => {
             {myMsg[toReply.index]?.reply?.map((el: any, indx: any) => {
               return (
                 <div key={indx}>
-                  <h1>{el.text}</h1>
+                  {el.text && <h1>{el.text}</h1>}
+                  {el.file && (
+                    <img src={URL.createObjectURL(el?.file)} alt="replyImg" />
+                  )}
                 </div>
               );
             })}
@@ -174,3 +175,16 @@ const ThreadHeader = styled.div`
 //         text: Text
 //   }]
 // }])
+
+// function onSend() {
+//   // myMsg.map((el) => { return { ...el, replies : [...el.replies, {reply : "hi"}]} })
+//     setReplies((reply: any) => [...reply, { text: text }]);
+
+//     myMsg.map((el) => {
+//       if (el.id === toReply.id) {
+//         // el.reply = [ ...el.reply, {text: text}]
+//         el.reply = replies;
+//       }
+//     });
+//     setText("")
+// }
