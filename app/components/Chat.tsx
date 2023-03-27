@@ -38,7 +38,6 @@ const dayDiff = ()=>{
     let msgA = myMsg[myMsg.length - 2]?.id;
     let msgB = myMsg[myMsg.length - 1]?.id;
     let diff = ( msgB - msgA )/(60*1000);
-    
     let diffnum = Number(diff.toFixed(0)) ;
 
     return diffnum == 0 ? "Today" : diffnum == 1 ? "Yesterday" : diffnum > 1 ? "Long Time Ago" : "Today"
@@ -48,11 +47,6 @@ const dayDiff = ()=>{
 
   return (
     <ChatDiv>
-
-      { 
-
-      }
-
       <div className="hr flex items-center">
         <hr />
         <p> {`${dayDiff()}`} </p>

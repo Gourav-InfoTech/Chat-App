@@ -75,16 +75,23 @@ const Reply = () => {
                 />
               )}
             </div>
-            {myMsg[toReply.index]?.reply?.map((el: any, indx: any) => {
-              return (
-                <div key={indx}>
-                  {el.text && <h1>{el.text}</h1>}
-                  {el.file && (
-                    <img src={URL.createObjectURL(el?.file)} alt="replyImg" />
-                  )}
-                </div>
-              );
-            })}
+            <div className="sender">
+              {myMsg[toReply.index]?.reply?.map((el: any, indx: any) => {
+                return (
+                  <div className="message" key={indx}>
+                    {el.text && <h1>{el.text}</h1>}
+                    {el.file && (
+                      <img
+                        src={URL.createObjectURL(el?.file)}
+                        alt="replyImg"
+                        height={100}
+                        width={100}
+                      />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
             <div className="msg_info flex text-[#72767E] text-[12px]">
               <p>frosty-scene-9 </p>
               <p> Today at 12:02 AM</p>
@@ -135,6 +142,23 @@ const ReplyDiv = styled.div`
       &:hover {
         background-color: #212326;
       }
+    }
+  }
+
+  .sender {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+
+    .message {
+      max-width: 322px;
+      word-break: break-all;
+      color: whitesmoke;
+      border-radius: 15px;
+      background-color: #343434;
+      padding: 5px 20px;
+      border-bottom-right-radius: 0;
+      margin-top: 5px;
     }
   }
 `;
