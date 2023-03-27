@@ -4,6 +4,10 @@ import styled from "styled-components";
 import { AiOutlineSend } from "react-icons/ai";
 import { VscSmiley } from "react-icons/Vsc";
 import { MdOutlineAddCircle } from "react-icons/md";
+// import "emoji-mart/css/emoji-mart.css";
+// import { Picker } from "emoji-mart";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
 import { useCtx } from "../context/ChatContext";
 
 interface props {
@@ -11,7 +15,7 @@ interface props {
   onimage: (s: any) => void;
   keypresshandler: (e: any) => void;
   text: string;
-  // settext: React.Dispatch<React.SetStateAction<string>>;
+  settext: React.Dispatch<React.SetStateAction<string>>;
   inputChange: (e: any) => void;
 }
 
@@ -20,9 +24,11 @@ const InputBar = ({
   onimage,
   keypresshandler,
   text,
+  settext,
   inputChange,
 }: props) => {
   // const { myMsg, setMyMsg } = useCtx();
+  const [emoji, setEmoji] = useState(false);
 
   const hiddenFileInput = React.useRef<any>(null);
   const handleClick = () => {
@@ -55,12 +61,21 @@ const InputBar = ({
           onChange={inputChange}
           onKeyDown={keypresshandler}
         />
-        <button>
+        {/* <Picker onSelect={(emoji) => settext((e) => e + emoji.native)} /> */}
+        <PickerDiv >
+        {emoji && <Picker data={data} onEmojiSelect={(emoji:any)=>settext((e) => e + emoji.native) } />}
+        </PickerDiv>
+
+        <button
+          onClick={() => {
+            setEmoji(!emoji);
+          }}
+        >
           <VscSmiley />
         </button>
       </div>
       <div className="send ">
-        <button onClick={onsend}>
+        <button onClick={()=> { onsend(), setEmoji(false) }}>
           <AiOutlineSend />
         </button>
       </div>
@@ -71,6 +86,7 @@ const InputBar = ({
 export default InputBar;
 
 const InputBarDiv = styled.div`
+position: relative;
   background-color: #2e3033;
   display: flex;
   align-items: center;
@@ -103,6 +119,12 @@ const InputBarDiv = styled.div`
     margin-top: 10px;
   }
 `;
+
+const PickerDiv = styled.div`
+  position: absolute;
+  right: 40px;
+  bottom: 65px;
+`
 
 // function onSend() {
 //   if (text) {

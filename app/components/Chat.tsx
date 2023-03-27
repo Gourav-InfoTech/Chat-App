@@ -89,7 +89,7 @@ const dayDiff = ()=>{
       </div>
 
       <div className="input_bar fixed bottom-0">
-        <InputBar onsend={onSend} onimage={onImage} text={text} keypresshandler={keypressHandler} inputChange={InputChange}/>
+        <InputBar onsend={onSend} onimage={onImage} text={text} settext={setText} keypresshandler={keypressHandler} inputChange={InputChange}/>
       </div>
     </ChatDiv>
   );

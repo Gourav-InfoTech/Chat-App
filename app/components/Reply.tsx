@@ -46,7 +46,11 @@ const Reply = () => {
     setText("");
   }
 
-  function keypressHandler() {}
+  function keypressHandler(e: any) {
+    if(e.keyCode === 13){
+      onSend();
+    }
+  }
 
   return (
     <div className={`${showIt} h-[100vh] bg-[#282a2d]`}>
@@ -99,6 +103,7 @@ const Reply = () => {
           </div>
         </div>
         <InputBar
+        settext={setText}
           onsend={onSend}
           onimage={onImage}
           text={text}
