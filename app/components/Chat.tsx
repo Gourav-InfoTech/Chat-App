@@ -139,7 +139,6 @@ const ChatDiv = styled.div`
       font-size: 15px;
       border-radius: 50%;
       padding: 10px;
-      /* aspect-ratio: 1; */
 
       &:hover {
         background-color: #212326;
