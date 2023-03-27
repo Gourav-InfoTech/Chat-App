@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { AiOutlineSend } from "react-icons/ai";
 import { VscSmiley } from "react-icons/Vsc";
 import { MdOutlineAddCircle } from "react-icons/md";
-// import "emoji-mart/css/emoji-mart.css";
-// import { Picker } from "emoji-mart";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useCtx } from "../context/ChatContext";
@@ -27,7 +25,6 @@ const InputBar = ({
   settext,
   inputChange,
 }: props) => {
-  // const { myMsg, setMyMsg } = useCtx();
   const [emoji, setEmoji] = useState(false);
 
   const hiddenFileInput = React.useRef<any>(null);
@@ -61,9 +58,13 @@ const InputBar = ({
           onChange={inputChange}
           onKeyDown={keypresshandler}
         />
-        {/* <Picker onSelect={(emoji) => settext((e) => e + emoji.native)} /> */}
-        <PickerDiv >
-        {emoji && <Picker data={data} onEmojiSelect={(emoji:any)=>settext((e) => e + emoji.native) } />}
+        <PickerDiv>
+          {emoji && (
+            <Picker
+              data={data}
+              onEmojiSelect={(emoji: any) => settext((e) => e + emoji.native)}
+            />
+          )}
         </PickerDiv>
 
         <button
@@ -75,7 +76,11 @@ const InputBar = ({
         </button>
       </div>
       <div className="send ">
-        <button onClick={()=> { onsend(), setEmoji(false) }}>
+        <button
+          onClick={() => {
+            onsend(), setEmoji(false);
+          }}
+        >
           <AiOutlineSend />
         </button>
       </div>
@@ -86,7 +91,7 @@ const InputBar = ({
 export default InputBar;
 
 const InputBarDiv = styled.div`
-position: relative;
+  position: relative;
   background-color: #2e3033;
   display: flex;
   align-items: center;
@@ -124,21 +129,4 @@ const PickerDiv = styled.div`
   position: absolute;
   right: 40px;
   bottom: 65px;
-`
-
-// function onSend() {
-//   if (text) {
-//     setMyMsg((prev) => [...prev, { text, id: Date.now() }]);
-//   }
-//   setText("");
-// }
-
-// const onImage = (f: any) => {
-//     setMyMsg((prev) => [...prev, { file: f, id: Date.now() }]);
-// };
-
-// const keypressHandler = (e: any)=>{
-//   if(e.keyCode === 13){
-//     onSend();
-//   }
-// }
+`;
